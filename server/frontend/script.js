@@ -144,7 +144,7 @@ function collectQueryParams() {
     const params = {};
 
     // Basic Fields
-    const basicFields = ['name', 'app_id', 'price', 'dlc_count', 'score_rank', 'positive_reviews', 'negative_reviews', 'required_age'];
+    const basicFields = ['name', 'app_id', 'price', 'dlc_count', 'score_rank', 'positive_reviews', 'negative_reviews', 'required_age', 'about_the_game'];
     basicFields.forEach(field => {
         const value = document.getElementById(field).value;
         if (value) params[field] = value;
