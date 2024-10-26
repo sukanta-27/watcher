@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Data Platform - Query Data</title>
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-wrapper teal">
+            <a href="index.html" class="brand-logo">Game Data Platform</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="load_data.html">Load Data</a></li>
+                <li><a href="query_data.html">Query Data</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h3>Query Data</h3>
+        <div class="row">
+            <form id="data-query-form" class="col s12">
+                <!-- Basic Fields -->
+                <div class="card-panel">
+                    <h5>Basic Search</h5>
+                    <div class="row">
+                        <!-- Name -->
+                        <div class="input-field col s6 m4">
+                            <input id="name" type="text">
+                            <label for="name">Game Name</label>
+                        </div>
+                        <!-- App ID -->
+                        <div class="input-field col s6 m4">
+                            <input id="app_id" type="number" min="0">
+                            <label for="app_id">App ID</label>
+                        </div>
+                        <!-- Price -->
+                        <div class="input-field col s6 m4">
+                            <input id="price" type="number" step="0.01" min="0">
+                            <label for="price">Price</label>
+                        </div>
+                        <!-- DLC Count -->
+                        <div class="input-field col s6 m4">
+                            <input id="dlc_count" type="number" min="0">
+                            <label for="dlc_count">DLC Count</label>
+                        </div>
+                        <!-- Score Rank -->
+                        <div class="input-field col s6 m4">
+                            <input id="score_rank" type="number" min="0">
+                            <label for="score_rank">Score Rank</label>
+                        </div>
+                        <!-- Positive Reviews -->
+                        <div class="input-field col s6 m4">
+                            <input id="positive_reviews" type="number" min="0">
+                            <label for="positive_reviews">Positive Reviews</label>
+                        </div>
+                        <!-- Negative Reviews -->
+                        <div class="input-field col s6 m4">
+                            <input id="negative_reviews" type="number" min="0">
+                            <label for="negative_reviews">Negative Reviews</label>
+                        </div>
+                        <!-- Required Age -->
+                        <div class="input-field col s6 m4">
+                            <input id="required_age" type="number" min="0">
+                            <label for="required_age">Required Age</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Search Toggle -->
+                <a class="btn-flat teal-text" href="#" id="advanced-search-toggle">
+                    <i class="material-icons left">expand_more</i>Advanced Search
+                </a>
+
+                <!-- Advanced Fields -->
+                <div id="advanced-search-section" style="display: none;">
+                    <div class="card-panel">
+                        <div class="row">
+                            <!-- Platforms -->
+                            <div class="input-field col s12">
+                                <select id="platforms" multiple>
+                                    <option value="" disabled>Select Platforms</option>
+                                    <option value="windows">Windows</option>
+                                    <option value="mac">Mac</option>
+                                    <option value="linux">Linux</option>
+                                </select>
+                                <label>Platforms</label>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic List Fields -->
+                        <div class="row">
+                            <!-- Developers -->
+                            <div class="input-field col s12">
+                                <label>Developers</label>
+                                <div id="developers-container">
+                                    <div class="developer-field">
+                                        <input type="text" name="developers">
+                                    </div>
+                                </div>
+                                <a href="#" class="add-field-btn" data-field="developers">
+                                    <i class="material-icons left">add</i>Add Developer
+                                </a>
+                            </div>
+
+                            <!-- Publishers -->
+                            <div class="input-field col s12">
+                                <label>Publishers</label>
+                                <div id="publishers-container">
+                                    <div class="publisher-field">
+                                        <input type="text" name="publishers">
+                                    </div>
+                                </div>
+                                <a href="#" class="add-field-btn" data-field="publishers">
+                                    <i class="material-icons left">add</i>Add Publisher
+                                </a>
+                            </div>
+
+                            <!-- Categories -->
+                            <div class="input-field col s12">
+                                <label>Categories</label>
+                                <div id="categories-container">
+                                    <div class="category-field">
+                                        <input type="text" name="categories">
+                                    </div>
+                                </div>
+                                <a href="#" class="add-field-btn" data-field="categories">
+                                    <i class="material-icons left">add</i>Add Category
+                                </a>
+                            </div>
+
+                            <!-- Genres -->
+                            <div class="input-field col s12">
+                                <label>Genres</label>
+                                <div id="genres-container">
+                                    <div class="genre-field">
+                                        <input type="text" name="genres">
+                                    </div>
+                                </div>
+                                <a href="#" class="add-field-btn" data-field="genres">
+                                    <i class="material-icons left">add</i>Add Genre
+                                </a>
+                            </div>
+
+                            <!-- Tags -->
+                            <div class="input-field col s12">
+                                <label>Tags</label>
+                                <div id="tags-container">
+                                    <div class="tag-field">
+                                        <input type="text" name="tags">
+                                    </div>
+                                </div>
+                                <a href="#" class="add-field-btn" data-field="tags">
+                                    <i class="material-icons left">add</i>Add Tag
+                                </a>
+                            </div>
+                            <!-- Supported Languages -->
+                            <div class="input-field col s12">
+                                <label>Supported Languages</label>
+                                <div id="supported_languages-container">
+                                    <div class="language-field">
+                                        <input type="text" name="languages">
+                                    </div>
+                                </div>
+                                <a href="#" class="add-field-btn" data-field="supported_languages">
+                                    <i class="material-icons left">add</i>Add Language
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Range Fields -->
+                        <div class="row">
+                            <!-- Price Range -->
+                            <div class="input-field col s6 m3">
+                                <input id="price_min" type="number" step="0.01" min="0">
+                                <label for="price_min">Price Min</label>
+                            </div>
+                            <div class="input-field col s6 m3">
+                                <input id="price_max" type="number" step="0.01" min="0">
+                                <label for="price_max">Price Max</label>
+                            </div>
+                            <!-- Positive Reviews Range -->
+                            <div class="input-field col s6 m3">
+                                <input id="positive_reviews_min" type="number" min="0">
+                                <label for="positive_reviews_min">Positive Reviews Min</label>
+                            </div>
+                            <div class="input-field col s6 m3">
+                                <input id="positive_reviews_max" type="number" min="0">
+                                <label for="positive_reviews_max">Positive Reviews Max</label>
+                            </div>
+                            <!-- Negative Reviews Range -->
+                            <div class="input-field col s6 m3">
+                                <input id="negative_reviews_min" type="number" min="0">
+                                <label for="negative_reviews_min">Negative Reviews Min</label>
+                            </div>
+                            <div class="input-field col s6 m3">
+                                <input id="negative_reviews_max" type="number" min="0">
+                                <label for="negative_reviews_max">Negative Reviews Max</label>
+                            </div>
+                            <!-- Release Date Range -->
+                            <div class="input-field col s6 m3">
+                                <input id="release_date_min" type="text" class="datepicker">
+                                <label for="release_date_min">Release Date Min</label>
+                            </div>
+                            <div class="input-field col s6 m3">
+                                <input id="release_date_max" type="text" class="datepicker">
+                                <label for="release_date_max">Release Date Max</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="card-panel">
+                    <div class="row">
+                        <!-- Remove the page input field -->
+                        <div class="input-field col s12">
+                            <input id="page_size" type="number" min="1" max="100" value="10" required>
+                            <label for="page_size">Page Size</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button class="btn waves-effect waves-light teal" type="submit">
+                    Search
+                    <i class="material-icons right"></i>
+                </button>
+            </form>
+        </div>
+        <div id="query-results"></div>
+
+        <!-- Pagination Controls -->
+        <div id="pagination-controls" class="right-align" style="margin-top: 20px;"></div>
+
+    </div>
+
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

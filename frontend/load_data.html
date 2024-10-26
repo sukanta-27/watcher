@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Data Platform - Load Data</title>
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-wrapper teal">
+            <a href="index.html" class="brand-logo">Game Data Platform</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="load_data.html">Load Data</a></li>
+                <li><a href="query_data.html">Query Data</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h3>Load Data</h3>
+        <div class="row">
+            <form id="load-data-form" class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="csv-url" type="url" class="validate" required>
+                        <label for="csv-url">CSV URL</label>
+                    </div>
+                </div>
+                <button class="btn waves-effect waves-light teal" type="submit">
+                    Load Data
+                    <i class="material-icons right"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Status and Response Display -->
+        <div id="load-data-response" class="card-panel" style="display: none;">
+            <h5>Status: <span id="status-code"></span></h5>
+            <pre id="response-body" class="response-body"></pre>
+        </div>
+    </div>
+
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

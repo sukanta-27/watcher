@@ -1,0 +1,16 @@
+/* Center the main content */
+.container {
+    margin-top: 40px;
+}
+
+/* Style the query results */
+#query-results table {
+    margin-top: 20px;
+}
+
+/* Style toast messages */
+#toast-container {
+    top: auto !important;
+    bottom: 10%;
+    right: 5%;
+}
