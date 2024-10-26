@@ -314,10 +314,14 @@ function displayQueryResults(results) {
 
         // About the Game
         const aboutCell = document.createElement('td');
-        aboutCell.innerText = game.about_the_game;
-        // Ensure text wraps properly
-        aboutCell.style.wordWrap = 'break-word';
-        aboutCell.style.whiteSpace = 'normal';
+        const truncatedText = game.about_the_game.length > 100
+            ? game.about_the_game.substring(0, 100) + '...'
+            : game.about_the_game;
+        aboutCell.innerText = truncatedText;
+        aboutCell.classList.add('tooltipped');
+        aboutCell.setAttribute('data-position', 'bottom');
+        aboutCell.setAttribute('data-tooltip', game.about_the_game);
+        M.Tooltip.init(aboutCell);
         row.appendChild(aboutCell);
 
         // Supported Languages
