@@ -1,7 +1,8 @@
 // script.js
 
 // API base URL
-const API_BASE_URL = 'http://localhost:8080/api';
+// const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = '/api';
 
 let globalQueryParams = {};
 let currentPage = 1;
@@ -143,7 +144,7 @@ function collectQueryParams() {
     const params = {};
 
     // Basic Fields
-    const basicFields = ['name', 'app_id', 'price', 'dlc_count', 'score_rank', 'positive_reviews', 'negative_reviews', 'required_age'];
+    const basicFields = ['name', 'app_id', 'price', 'dlc_count', 'score_rank', 'positive_reviews', 'negative_reviews', 'required_age', 'about_the_game'];
     basicFields.forEach(field => {
         const value = document.getElementById(field).value;
         if (value) params[field] = value;

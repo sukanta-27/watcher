@@ -16,6 +16,7 @@ python-dotenv = "*"
 aiohttp = "*"
 pandas = "*"
 psutil = "*"
+jinja2 = "*"
 
 [dev-packages]
 # Add any development dependencies here, for example:

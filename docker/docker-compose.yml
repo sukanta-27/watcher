@@ -31,5 +31,16 @@ services:
       DEBUG: 1
     restart: always
 
+  # frontend:
+  #   image: nginx:latest
+  #   volumes:
+  #     - ../frontend:/usr/share/nginx/html
+  #     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  #   ports:
+  #     - "5000:5000"
+  #   depends_on:
+  #     - backend-server
+  #   restart: always
+
 volumes:
   postgres_data:
