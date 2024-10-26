@@ -1,7 +1,8 @@
 // script.js
 
 // API base URL
-const API_BASE_URL = 'http://localhost:8080/api';
+// const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = '/api';
 
 let globalQueryParams = {};
 let currentPage = 1;

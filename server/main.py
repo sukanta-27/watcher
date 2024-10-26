@@ -6,6 +6,12 @@ from server.api import upload, query, health
 from server.db.session import engine
 from server.db.base import Base
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
+from fastapi.templating import Jinja2Templates
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 
 # Initialize FastAPI server
 app = FastAPI(
@@ -24,6 +30,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR, html=True), name="static")
+
+# Set up templates
+templates = Jinja2Templates(directory=FRONTEND_DIR)
+
+
 app.include_router(upload.router, prefix="/api", tags=["Upload"])
 app.include_router(health.router, prefix="/api", tags=["Health"])
 app.include_router(query.router, prefix="/api", tags=["Query"])
@@ -31,9 +43,9 @@ app.include_router(query.router, prefix="/api", tags=["Query"])
 # Create all tables in the database
 Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-async def root():
-    return {"message": "Welcome to Game Data API"}
+# @app.get("/")
+# async def root():
+#     return {"message": "Welcome to Game Data API"}
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
@@ -46,3 +58,18 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         status_code=exc.status_code,
         content={"detail": exc.detail}
     )
+
+
+from fastapi.responses import HTMLResponse
+
+@app.get("/", response_class=HTMLResponse)
+async def serve_index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/load_data.html", response_class=HTMLResponse)
+async def serve_load_data(request: Request):
+    return templates.TemplateResponse("load_data.html", {"request": request})
+
+@app.get("/query_data.html", response_class=HTMLResponse)
+async def serve_query_data(request: Request):
+    return templates.TemplateResponse("query_data.html", {"request": request})
