@@ -32,7 +32,8 @@ async def process_csv_from_url(file_url: str, db: Session) -> Tuple[int, int, Di
     # Read CSV into Pandas DataFrame
     df = pd.read_csv(BytesIO(content), sep=',', dtype=str)
     print(f"DataFrame shape: {df.shape}")
-    print(df.head())
+    success_count = 0
+    failure_count = 0
 
     # First Pass: Validate and prepare data
     for index, row in df.iterrows():
@@ -94,14 +95,13 @@ async def process_csv_from_url(file_url: str, db: Session) -> Tuple[int, int, Di
             continue
 
     if errors:
-        # If there are errors, do not proceed to insert data
-        success_count = 0
         failure_count = len(errors)
         print(f"Validation failed for {failure_count} rows.")
-        return success_count, failure_count, errors
+        if failure_count == len(data_to_insert):
+            return success_count, failure_count, errors
+
 
     # Second Pass: Insert data into the database within a transaction
-    success_count = 0
     try:
         with db.begin():
             for data in data_to_insert:
@@ -132,7 +132,6 @@ async def process_csv_from_url(file_url: str, db: Session) -> Tuple[int, int, Di
                 success_count += 1
 
         print(f"Successfully processed {success_count} rows.")
-        failure_count = 0
 
     except Exception as e:
         db.rollback()
