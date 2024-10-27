@@ -10,6 +10,6 @@ class Settings:
     if not DATABASE_URL:
         raise ValueError("No DATABASE_URL environment variable set")
     else:
-        print(f"DATABASE_URL loaded from environment variable")
+        print(f"DATABASE_URL loaded from environment variable: {DATABASE_URL}")
 
 settings = Settings()

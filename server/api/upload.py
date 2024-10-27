@@ -10,18 +10,13 @@ from server.models.pydantic_models import (
     UploadErrorResponse,
     UploadProcessingErrorResponse
 )
+from server.constants.status import Status as ResponseStatus
 
 router = APIRouter()
 
 @router.post(
     "/upload_data",
     response_model=UploadResponse,
-    responses={
-        200: {"model": UploadResponse, "description": "Successfully processed CSV file"},
-        422: {"model": UploadProcessingErrorResponse, "description": "Could not process CSV file"},
-        400: {"model": UploadErrorResponse, "description": "Invalid URL or file format"},
-        500: {"model": UploadErrorResponse, "description": "Server error during processing"}
-    },
     status_code=status.HTTP_200_OK,
     summary="Upload CSV Data",
     description="Upload and process CSV data from a publicly accessible URL"
@@ -39,10 +34,23 @@ async def upload_data(
                 rows_processed_successfully=rows_processed_successfully,
                 rows_could_not_be_processed=rows_could_not_be_processed,
                 errors=errors,
-                status="failure"
+                status=ResponseStatus.FAILED.value
             )
             return JSONResponse(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content=error_response.__dict__
+            )
+
+        if rows_could_not_be_processed > 0:
+            error_response = UploadProcessingErrorResponse(
+                message="Not all rows could be processed successfully, find detailed errors below",
+                rows_processed_successfully=rows_processed_successfully,
+                rows_could_not_be_processed=rows_could_not_be_processed,
+                errors=errors,
+                status="partially_completed"
+            )
+            return JSONResponse(
+                status_code=status.HTTP_207_MULTI_STATUS,
                 content=error_response.__dict__
             )
 
@@ -51,8 +59,9 @@ async def upload_data(
             rows_processed_successfully=rows_processed_successfully,
             rows_could_not_be_processed=rows_could_not_be_processed,
             errors=errors,
-            status="success"
+            status=ResponseStatus.COMPLETED.value
         )
+
     except Exception as e:
         import traceback as tb
         print(tb.format_exc())
