@@ -49,6 +49,9 @@ Access the deployed application at:
 
 - **URL**: [https://watcher-sukanta.fly.dev](https://watcher-sukanta.fly.dev)
 
+### Disclaimer: 
+The application is deployed on Fly.io, and the database is configured to scale down to zero after one hour of inactivity to save costs, as it is an assignment project. Consequently, the first request might be slower than expected, as the database needs to spin up again after being idle. 
+
 ---
 
 ## API Endpoints

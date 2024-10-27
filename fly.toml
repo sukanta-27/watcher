@@ -1,11 +1,12 @@
-app = "watcher-sukanta"
-primary_region = "bom"
+# fly.toml
+app = 'watcher-sukanta'
+primary_region = 'bom'
 
 [build]
-  dockerfile = "docker/Dockerfile"
+  dockerfile = 'docker/Dockerfile'
 
 [deploy]
-  strategy = "canary"
+  strategy = 'canary'
 
 [http_service]
   internal_port = 8000
@@ -13,25 +14,18 @@ primary_region = "bom"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
-[[services]]
-  protocol = "tcp"
-  internal_port = 8000
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 0
-
-  [[services.ports]]
+  [[http_service.ports]]
     port = 80
     handlers = ["http"]
     force_https = true
 
-  [[services.ports]]
+  [[http_service.ports]]
     port = 443
     handlers = ["tls", "http"]
 
 [[vm]]
-  memory = "1gb"
-  cpu_kind = "shared"
+  memory = '1gb'
+  cpu_kind = 'shared'
   cpus = 1
