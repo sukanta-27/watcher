@@ -101,7 +101,10 @@ async def upload_data_async(
 
 @router.get(
     "/upload_data_async/status/",
-    response_model=TaskStatusResponse
+    response_model=TaskStatusResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Get Async Upload Status",
+    description="Get the status of an async upload task"
 )
 async def get_task_status(
         task_id: str = Query(...),

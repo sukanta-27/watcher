@@ -9,10 +9,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
 from fastapi.templating import Jinja2Templates
+from starlette.responses import RedirectResponse
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
-
+ENV = os.getenv("ENV")
 # Initialize FastAPI server
 app = FastAPI(
     title="Game Data API",
@@ -29,6 +31,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def enforce_https_redirect(request: Request, call_next):
+    # Check if the X-Forwarded-Proto header exists and is set to 'http'
+    if ENV != "local" and request.headers.get("x-forwarded-proto") == "http":
+        # Redirect to HTTPS
+        url = request.url.replace(scheme="https")
+        return RedirectResponse(url)
+    # Otherwise, process the request as usual
+    return await call_next(request)
 
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR, html=True), name="static")
 
