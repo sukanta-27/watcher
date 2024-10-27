@@ -20,7 +20,7 @@ if (document.getElementById('load-data-form')) {
             return;
         }
 
-        fetch(`${API_BASE_URL}/upload_data`, {
+        fetch(`${API_BASE_URL}/upload_data_async`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ file_url: csvUrl })
@@ -58,6 +58,52 @@ function displayResponseBody(data) {
     responseBodyElement.innerText = JSON.stringify(data, null, 2);
 }
 
+// Function to handle track task form submission
+document.addEventListener('DOMContentLoaded', function () {
+    const trackTaskForm = document.getElementById('track-task-form');
+
+    if (trackTaskForm) {
+        trackTaskForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const taskIdInput = document.getElementById('task-id');
+            const taskId = taskIdInput.value.trim();
+
+            if (!taskId) {
+                M.toast({ html: 'Please enter a Task ID.', classes: 'red' });
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/upload_data_async/status?task_id=${encodeURIComponent(taskId)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const responseData = await response.json();
+
+                const taskStatusResponse = document.getElementById('task-status-response');
+                const taskStatus = document.getElementById('task-status');
+
+                if (response.ok) {
+                    // Display the task status
+                    taskStatus.innerText = JSON.stringify(responseData, null, 2);
+                    taskStatusResponse.style.display = 'block';
+                } else {
+                    // Display error message
+                    taskStatus.innerText = `Error: ${responseData.detail || 'Unable to fetch task status.'}`;
+                    taskStatusResponse.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error fetching task status:', error);
+                M.toast({ html: 'An error occurred while fetching task status.', classes: 'red' });
+            }
+        });
+    }
+
+});
 
 // Initialize Materialize components
 document.addEventListener('DOMContentLoaded', function() {

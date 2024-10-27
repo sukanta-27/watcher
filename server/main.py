@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.responses import JSONResponse
-from server.api import upload, query, health
+from server.api import upload, query, health, async_upload
 from server.db.session import engine
 from server.db.base import Base
 from fastapi.middleware.cors import CORSMiddleware
@@ -39,6 +39,7 @@ templates = Jinja2Templates(directory=FRONTEND_DIR)
 app.include_router(upload.router, prefix="/api", tags=["Upload"])
 app.include_router(health.router, prefix="/api", tags=["Health"])
 app.include_router(query.router, prefix="/api", tags=["Query"])
+app.include_router(async_upload.router, prefix="/api", tags=["Async Upload"])
 
 # Create all tables in the database
 Base.metadata.create_all(bind=engine)
@@ -66,10 +67,14 @@ from fastapi.responses import HTMLResponse
 async def serve_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/load_data.html", response_class=HTMLResponse)
+@app.get("/load_data", response_class=HTMLResponse)
 async def serve_load_data(request: Request):
     return templates.TemplateResponse("load_data.html", {"request": request})
 
-@app.get("/query_data.html", response_class=HTMLResponse)
+@app.get("/query_data", response_class=HTMLResponse)
 async def serve_query_data(request: Request):
     return templates.TemplateResponse("query_data.html", {"request": request})
+
+@app.get("/track_task", response_class=HTMLResponse)
+async def serve_track_request(request: Request):
+    return templates.TemplateResponse("track_request.html", {"request": request})

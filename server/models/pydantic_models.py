@@ -1,6 +1,6 @@
 from pydantic import BaseModel, HttpUrl, Field, field_validator
 from typing import Optional, Dict, Any, List
-from datetime import date
+from datetime import date, datetime
 
 # Upload API Request Model
 class UploadRequest(BaseModel):
@@ -12,6 +12,18 @@ class UploadRequest(BaseModel):
                 "file_url": "https://example.com/data.csv"
             }
         }
+
+class TaskResponse(BaseModel):
+    task_id: str
+    message: str
+
+class TaskStatusResponse(BaseModel):
+    task_id: str
+    status: str
+    message: Optional[str] = None
+    result: Optional[Dict[str, Any]] = None
+    created_at: datetime
+    completed_at: Optional[datetime] = None
 
 # Upload API Response Models
 class UploadResponse(BaseModel):

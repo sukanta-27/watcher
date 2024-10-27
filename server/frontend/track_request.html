@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Game Data Platform - Load Data</title>
+    <title>Game Data Platform - Track Task</title>
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -24,26 +24,26 @@
 
     <!-- Main Content -->
     <div class="container">
-        <h3>Load Data</h3>
+        <h3>Track Task Status</h3>
         <div class="row">
-            <form id="load-data-form" class="col s12">
+            <form id="track-task-form" class="col s12">
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="csv-url" type="url" class="validate" required>
-                        <label for="csv-url">CSV URL</label>
+                        <input id="task-id" type="text" class="validate" required>
+                        <label for="task-id">Task ID</label>
                     </div>
                 </div>
                 <button class="btn waves-effect waves-light teal" type="submit">
-                    Load Data
+                    Check Status
                     <i class="material-icons right"></i>
                 </button>
             </form>
         </div>
 
         <!-- Status and Response Display -->
-        <div id="load-data-response" class="card-panel" style="display: none;">
-            <h5>Status: <span id="status-code"></span></h5>
-            <pre id="response-body" class="response-body"></pre>
+        <div id="task-status-response" class="card-panel" style="display: none;">
+            <h5>Task Status:</h5>
+            <pre id="task-status" class="response-body"></pre>
         </div>
     </div>
 
