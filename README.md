@@ -50,7 +50,16 @@ Access the deployed application at:
 - **URL**: [https://watcher-sukanta.fly.dev](https://watcher-sukanta.fly.dev)
 
 ### Disclaimer: 
-The application is deployed on Fly.io, and the database is configured to scale down to zero after one hour of inactivity to save costs, as it is an assignment project. Consequently, the first request might be slower than expected, as the database needs to spin up again after being idle. 
+The application is deployed on Fly.io, and the database is configured to scale down to zero after one hour of inactivity to save costs, as it is an assignment project. Consequently, the first request might be slower than expected, as the database needs to spin up again after being idle.
+
+
+### Known Issue:
+There is an ongoing issue in the hosted application in the `/track_task` endpoint, where the API endpoint is getting redirected to http from https.
+Most modern web browsers do not support the redirection, so the API endpoint is not accessible.
+I have tried adding app level middleware to solve this issue where I am enforcing https redirect but it too is not solving the issue.
+I will fix this issue in the future. But for now you can access this api from the Swagger UI. 
+I regret the inconvenience.
+You can access this API from: [Swagger UI](https://watcher-sukanta.fly.dev/docs#/Async%20Upload/get_task_status_api_upload_data_async_status__get)
 
 ---
 

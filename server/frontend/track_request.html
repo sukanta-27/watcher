@@ -22,6 +22,18 @@
         </div>
     </nav>
 
+    <!-- Conditional Warning Message -->
+    <div id="warning-message" class="container" style="display: none;">
+        <div class="card-panel yellow lighten-4" style="border-left: 5px solid #f57f17;">
+            <h5 style="color: #f57f17;">⚠️ Known Issue</h5>
+            <p>There is an ongoing issue in the hosted application in the <code>/track_task</code> endpoint, where the API endpoint is getting redirected to HTTP from HTTPS.
+            Most modern web browsers do not support the redirection, so the API endpoint is not accessible. I have tried adding app-level middleware to solve this issue
+            where I am enforcing HTTPS redirect, but it too is not solving the issue. I will fix this issue in the future. But for now, you can access this API from the
+            <a href="https://watcher-sukanta.fly.dev/docs#/Async%20Upload/get_task_status_api_upload_data_async_status__get" target="_blank" style="color: #f57f17;">Swagger UI</a>.
+            I regret the inconvenience.</p>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <div class="container">
         <h3>Track Task Status</h3>
@@ -52,5 +64,12 @@
 
     <!-- Custom Scripts -->
     <script src="/static/script.js"></script>
+    <script>
+        // Display warning message only if not running on localhost
+        if (window.location.hostname !== 'localhost') {
+            document.getElementById('warning-message').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
+
