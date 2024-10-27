@@ -15,6 +15,8 @@
   - [Setup Instructions](#setup-instructions)
   - [Docker Compose Configuration](#docker-compose-configuration)
 - [Database Schema Link](#database-schema-link)
+- [Cost Estimate](#cost-estimate)
+
 
 ---
 
@@ -346,6 +348,124 @@ For a detailed view of the database schema, please visit:
 This link provides a graphical representation of the database tables and their relationships.
 
 ---
+<a name="cost-estimate"></a>
+# Cost Estimate For Production
+To understand the cost estimate for the production requirement, it is important to understand what the resource utilisation is for the development environment.
+The project is deployed in fly.io so all the estimates are based on the pricing of fly.io.
+
+It is to be noted, that if we need to take it to production I will go for AWS instead of going for fly.io.
+
+Cost details for fly.io are in the following link:
+[Fly.io Pricing Page](https://fly.io/docs/about/pricing/)
+
+## Cost Estimate of Development Environment based on the resource used:
+
+### App Server (Service 1)
+- Machines: 2 × shared-cpu-1x@1024MB
+- Scale to zero after 1hr inactivity
+- Current usage metrics:
+  - Memory: 339MB/1GB
+  - Load: 0.06 (very low)
+  - Network: 5kbps in, 100bits/s out
+  - **Active hours estimation: ~8 hours/workday = 160 hours/month**
+
+### Database (Service 2)
+- Machines: 1 × shared-cpu-1x@1024MB
+- Scale to zero after 1hr inactivity
+- Current usage metrics:
+  - Load: 0.32
+  - Network: 400bits/s in, 6KB/s out
+  - **Active hours estimation: ~8 hours/workday = 160 hours/month**
+
+### Storage
+- Volume size: 1GB
+- Current usage: 127MB
+- Data source: 166KB CSV
+
+## Cost Calculation
+
+1. **App Servers**
+- Base rate: $5.70/month for shared-cpu-1x@1024MB
+- Actual cost with scale to zero:
+  - $5.70 × (160 hours / 730 hours) × 2 machines
+  - = $5.70 × 0.219 × 2
+  - = $2.50/month
+
+2. **Database Server**
+- Base rate: $5.70/month for shared-cpu-1x@1024MB
+- Actual cost with scale to zero:
+  - $5.70 × (160 hours / 730 hours)
+  - = $5.70 × 0.219
+  - = $1.25/month
+
+3. **Persistent Volume**
+- Rate: $0.15/GB/month
+- Size: 1GB
+- Cost: $0.15/month
+
+4. **Network Transfer**
+- Current usage well within free tier (160GB/month)
+- Cost: $0.00
+
+### Total Monthly Cost Estimate
+
+| Component | Base Cost | Actual Cost (with scale to zero) |
+|-----------|-----------|----------------------------------|
+| App Servers (2×) | $11.40 | $2.50 |
+| Database Server | $5.70 | $1.25 |
+| Persistent Volume | $0.15 | $0.15 |
+| Network Transfer | $0.00 | $0.00 |
+| **Total** | **$17.25** | **$3.90** |
+
+
+
+## Cost Estimate For Production Scale (Educated Guesses)
+
+## Production Requirements
+### Base Requirements
+- File uploads: 50MB × 1/day = 1.5GB/month (Took the max file size provided in the assignment pdf for estimate)
+- Queries: 100/day = 3000/month
+- Storage growth: ~500MB/month
+### Additional Requirements
+- 24x7 uptime (730 hours/month)
+- No scale to zero
+- High availability
+
+## Recommended Production Setup
+
+1. **App Servers**
+- Configuration: 2 × shared-cpu-2x@2048MB (2GB)
+- Always running (730 hours/month)
+- Deployed across different regions for HA
+- Cost: \$13.40/month × 2 = \$26.80/month
+
+2. **Database Server**
+- Primary: 1 × shared-cpu-2x@2048MB (2GB)
+- Read Replica: 1 × shared-cpu-2x@2048MB (2GB)
+- Always running (730 hours/month)
+- Cost: \$13.40/month × 2 = \$26.80/month
+
+3. **Persistent Volume**
+- Primary DB: 5GB
+- Replica DB: 5GB
+- Cost: \$0.15/GB × 10GB = $1.50/month
+
+4. **Network Transfer**
+- Included free tier: 160GB/month outbound
+- Expected usage well within free tier
+- Inter-region transfer for replication: ~2GB/month (included) -> This is an estimate I made based on the inbound and outbound data transfer rate I noticed while developing.
+
+
+## Total Monthly Cost Estimate
+| Component | Projected Cost |
+|-----------|----------------|
+| App Servers (2×) | $26.80         |
+| Database (Primary + Replica) | $26.80         |
+| Persistent Volume | $1.50          |
+| Network Transfer | $0.00          |
+| **Total** | **$55.10**     |
+
+
 
 ## Future Features
 - Add Authentication in both API Endpoints and Frontend.
