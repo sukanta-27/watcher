@@ -45,7 +45,7 @@ For a visual representation of the database schema, please refer to the [Databas
 
 ---
 
-## Deployed Application
+## Deployed Application (Currently this deployment has been stopped, you can continue with a local setup)
 
 Access the deployed application at:
 
